@@ -1,0 +1,194 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, 'Hiragino Sans', sans-serif;
+    background: #f7f7f7;
+    color: #333;
+}
+
+/* ヘッダー */
+header {
+    background: #fff;
+    padding: 20px 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #222;
+}
+
+.filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+#search {
+    flex: 1;
+    min-width: 180px;
+    padding: 8px 14px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+#search:focus {
+    border-color: #e07b54;
+}
+
+#genre-filter {
+    padding: 8px 14px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    background: #fff;
+    outline: none;
+    cursor: pointer;
+}
+
+/* メインエリア */
+main {
+    padding: 28px 32px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* カードグリッド（PC: 複数列 / スマホ: 1列） */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+/* カード */
+.card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+.card-image {
+    width: 100%;
+    height: 175px;
+    object-fit: cover;
+}
+
+.card-image-placeholder {
+    width: 100%;
+    height: 175px;
+    background: #f0ede8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+}
+
+.card-body {
+    padding: 14px 16px 16px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.card-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.stars {
+    color: #f5a623;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.card-meta {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.tag {
+    font-size: 0.72rem;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: #f0f0f0;
+    color: #666;
+}
+
+.card-comment {
+    font-size: 0.82rem;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-link {
+    display: inline-block;
+    padding: 6px 14px;
+    background: #e07b54;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.card-link:hover {
+    background: #c96840;
+}
+
+/* ローディング・空状態 */
+#loading, .empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: #aaa;
+    font-size: 0.95rem;
+}
+
+/* スマホ */
+@media (max-width: 600px) {
+    header {
+        padding: 14px 16px;
+    }
+
+    main {
+        padding: 16px;
+    }
+
+    .cards-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+}

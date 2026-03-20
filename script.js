@@ -2,7 +2,7 @@
 // ここにGoogleスプレッドシートのURLを貼る
 // （後で設定します）
 // ========================================
-const SHEET_URL = 'YOUR_SHEET_URL_HERE';
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTPivvYW_YpsmnMQ_Aj58Ax0TtDBeS_Yh0JouzW3xT3wLLL7g71UVNZWYaRtvRgvmz4QoAqns-8P5iD/pub?gid=0&single=true&output=csv';
 
 let allRestaurants = [];
 

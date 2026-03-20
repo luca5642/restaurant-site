@@ -1,8 +1,5 @@
-// ========================================
-// ここにGoogleスプレッドシートのURLを貼る
-// （後で設定します）
-// ========================================
-const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTPivvYW_YpsmnMQ_Aj58Ax0TtDBeS_Yh0JouzW3xT3wLLL7g71UVNZWYaRtvRgvmz4QoAqns-8P5iD/pub?gid=0&single=true&output=csv';
+const SHEET_ID = '1vtvqsDQu7hsgy4nySfI01HkwaBVSfz7CfMJbkPe2-LU';
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
 
 let allRestaurants = [];
 
@@ -10,49 +7,33 @@ async function loadData() {
     try {
         const response = await fetch(SHEET_URL);
         const text = await response.text();
-        allRestaurants = parseCSV(text);
+        // gvizのレスポンスはJSONの前後にラッパーがあるので取り除く
+        const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
+        allRestaurants = parseGviz(json);
         populateGenreFilter();
         renderCards(allRestaurants);
         document.getElementById('loading').style.display = 'none';
     } catch (error) {
-        document.getElementById('loading').textContent = 'データの読み込みに失敗しました。URLを確認してください。';
+        document.getElementById('loading').textContent = 'データの読み込みに失敗しました。スプレッドシートの共有設定を確認してください。';
     }
 }
 
-// CSV文字列をオブジェクトの配列に変換
-function parseCSV(text) {
-    const lines = text.trim().split('\n');
-    return lines.slice(1).map(line => {
-        const cols = parseCSVLine(line);
+// gviz JSONをオブジェクトの配列に変換
+function parseGviz(json) {
+    const rows = json.table.rows;
+    return rows.map(row => {
+        const c = row.c || [];
+        const val = (i) => (c[i] && c[i].v != null) ? String(c[i].v) : '';
         return {
-            name:     cols[0] || '',
-            genre:    cols[1] || '',
-            location: cols[2] || '',
-            rating:   Math.min(5, Math.max(0, parseInt(cols[3]) || 0)),
-            comment:  cols[4] || '',
-            photo:    cols[5] || '',
-            url:      cols[6] || '',
+            name:     val(0),
+            genre:    val(1),
+            location: val(2),
+            rating:   Math.min(5, Math.max(0, parseInt(val(3)) || 0)),
+            comment:  val(4),
+            photo:    val(5),
+            url:      val(6),
         };
     }).filter(r => r.name.trim() !== '');
-}
-
-// ダブルクォート対応のCSVパーサー
-function parseCSVLine(line) {
-    const result = [];
-    let current = '';
-    let inQuotes = false;
-    for (let i = 0; i < line.length; i++) {
-        if (line[i] === '"') {
-            inQuotes = !inQuotes;
-        } else if (line[i] === ',' && !inQuotes) {
-            result.push(current.trim());
-            current = '';
-        } else {
-            current += line[i];
-        }
-    }
-    result.push(current.trim());
-    return result;
 }
 
 // 星を表示
